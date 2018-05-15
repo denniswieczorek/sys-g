@@ -1,8 +1,9 @@
 #ifndef POLYNOMIAL_H
 #define POLYNOMIAL_H
 
+#include <iostream>
 #include "Monomial.h"
-#include "MonomialList.h"
+#include "LinkedList.h"
 
 class Polynomial
 {
@@ -14,6 +15,10 @@ class Polynomial
 		bool operator>(Polynomial&);
 		Polynomial& operator-(Polynomial*);
 		Polynomial& operator*(Monomial*);
+		Monomial* getLeadingTerm(LinkedList<Monomial>&);
+		
+		int getNumMonomials();
+		LinkedList<Monomial>& getMembers();
 		//bool operator==(Polynomial&);
 		//Polynomial* computeResolvent(Polynomial&);
 		//Polynomial* reduce(Polynomial&);
@@ -22,7 +27,7 @@ class Polynomial
 		friend std::ostream& operator<<(std::ostream&, Polynomial&);	
 		
 	private:
-		MonomialList polynomial;
+		LinkedList<Monomial> polynomial;
 
 
 };

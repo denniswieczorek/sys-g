@@ -20,8 +20,10 @@ class LinkedList
 	public:
 		LinkedList();
 		~LinkedList();
-		LinkedList(const LinkedList&);
-		LinkedList& operator=(const LinkedList&);
+		void copyFrom(const LinkedList<T>&);
+		void deleteNodes();
+		LinkedList(const LinkedList<T>&);
+		LinkedList& operator=(const LinkedList<T>&);
 		LinkedList& operator+=(T*);
 		//LinkedList& operator-=(T*);
 		T* operator[](int);
@@ -33,58 +35,80 @@ class LinkedList
 };
 
 template <class T>
-LinkedList<T>::LinkedList() : head(0) {}
+LinkedList<T>::LinkedList() : head(0) 
+{
+	std::cout << "ll ctor" << std::endl;
+}
 
 template <class T>
 LinkedList<T>::~LinkedList() 
 {
+	std::cout << "ll dtor" << std::endl;
+	deleteNodes();
+}
+
+/*
+NTBRW
+*/
+
+template <class T>
+void LinkedList<T>::deleteNodes(){
 	Node* currNode, *nextNode;
-	
 	currNode = head;
+
 	
 	while(currNode != 0){
 		nextNode = currNode->next;
-		delete currNode->data;
+		delete currNode->data;		
 		delete currNode;
 		currNode = nextNode;
 	}
+
+
+} 
+
+template <class T>
+void LinkedList<T>::copyFrom(const LinkedList<T>& cpList)
+{
+	Node* cpCurrNode;
+	cpCurrNode = cpList.head;	
+	head = 0;
+	while(cpCurrNode !=0){
+		*this+=cpCurrNode->data;
+		cpCurrNode = cpCurrNode->next;
+		}
 }
 
 
 template <class T>
-LinkedList<T>::LinkedList(const LinkedList& cpList) 
+LinkedList<T>::LinkedList(const LinkedList<T>& cpList) 
 {	
-	Node *currNode, *cpCurrNode, *newNode;
-	currNode = head;
-	cpCurrNode = cpList.head;
-		
-	if(cpCurrNode == 0){
-		head = 0;
-	}
-	else{
-		head->data = cpCurrNode->data;
-		cpCurrNode = cpCurrNode->next;	
-	}
-	
-		
-	
-	while(cpCurrNode != 0){
-		newNode = new Node;
-		newNode->data = cpCurrNode->data;
-		currNode->next = newNode;
-		currNode = newNode;
-		cpCurrNode = cpCurrNode->next;
-	}
+	copyFrom(cpList);
 }
+/*
+NTBRW
+*/
 
 
 template <class T>
 LinkedList<T>& LinkedList<T>::operator = (const LinkedList<T>& rhs)
 {
-	T temp = rhs;
-	head = temp.head;
-	return *this;
+	//check for self assignment
+	if(this == &rhs){
+		return *this;
+	}
+
+	//free old mememory
+	deleteNodes();
+	copyFrom(rhs);
+	return *this;	
+	
+
 }
+
+
+
+
 
 template <class T>
 LinkedList<T>& LinkedList<T>::operator+=(T* newVar)

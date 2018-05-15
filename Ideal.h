@@ -1,7 +1,7 @@
 #ifndef IDEAL_H
 #define IDEAL_H
 
-#include "PolynomialList.h"
+#include "LinkedList.h"
 #include "Polynomial.h"
 
 class Ideal 
@@ -10,13 +10,15 @@ class Ideal
 	public:
 		Ideal();
 		~Ideal();
+		int getNumPolys();
+		LinkedList<Polynomial>& getMembers();
 		void operator+=(Polynomial*);
 				
 
 
 	
 	private:
-		PolynomialList ideal;
+		LinkedList<Polynomial> ideal;
 };
 
 #endif	

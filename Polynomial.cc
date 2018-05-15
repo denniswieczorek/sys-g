@@ -1,19 +1,45 @@
 #include "Polynomial.h"
 
-Polynomial::Polynomial() { }
-Polynomial::~Polynomial() { }
+Polynomial::Polynomial() 
+{ 
+	std::cout << "poly ctor" <<std::endl;
+}
+Polynomial::~Polynomial() 
+{
+	std::cout << "poly dtor" << std::endl;	
+}
+
+int Polynomial::getNumMonomials() {return polynomial.getSize(); }
+
+LinkedList<Monomial>& Polynomial::getMembers() { return polynomial; }
 
 void Polynomial::operator+=(Monomial* m) { polynomial+=(m); }
+
+
+Monomial* Polynomial::getLeadingTerm(LinkedList<Monomial>& m)
+{
+	Monomial* max = m[0];
+	for(int i=0;i<m.getSize(); i++){
+		if(m[i] > max){
+			max = m[i];
+		}
+	}
+	return max;
+}
+
+
 
 bool Polynomial::operator<(Polynomial& p)
 {
 	bool result = false;
-	if(polynomial.getLeadingTerm() < p.polynomial.getLeadingTerm()){
+	if(getLeadingTerm(polynomial) < getLeadingTerm(p.polynomial)){
 		result = true;
 	}
 	return result;
 }
 
+/*
+Need to redefine
 Polynomial& Polynomial::operator-(Polynomial* p)
 {
 	p->polynomial.negate();
@@ -21,10 +47,12 @@ Polynomial& Polynomial::operator-(Polynomial* p)
 		polynomial+=(p->polynomial[i]);
 	}	
 	return *this;
-
-
+	
+  
 }
+*/
 
+/*
 
 Polynomial& Polynomial::operator*(Monomial* m) 
 {
@@ -32,10 +60,12 @@ Polynomial& Polynomial::operator*(Monomial* m)
   return *this;
 }
 
+*/
+
 bool Polynomial::operator>(Polynomial& p)
 {
 	bool result = false;
-	if(polynomial.getLeadingTerm() > p.polynomial.getLeadingTerm()){
+	if(getLeadingTerm(polynomial) > getLeadingTerm(p.polynomial)){
 		result = true;
 	}
 	return result;
@@ -87,6 +117,17 @@ NEED
 
 std::ostream& operator<<(std::ostream& output, Polynomial& p)
 {
-	output << p.polynomial;
+	
+
+	for(int i=0;i<p.polynomial.getSize(); i++){
+		std::ostringstream sign;
+		if(p.polynomial[i]->getCoeff() <0)
+			sign << "" ;// negative
+		else{
+			sign <<"+";	
+		}
+		output << sign.str()<< *p.polynomial[i];
+		
+	}
 	return output;
 }

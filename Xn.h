@@ -10,6 +10,7 @@ class Xn
 {
 	public:
 		Xn(int, int);
+		~Xn();
 		int getEx();
 		int getId();
 		void setEx(int);
@@ -18,7 +19,7 @@ class Xn
 		bool operator==(Xn&);
 		friend std::ostream& operator<<(std::ostream&, Xn&);
 	private:
-		int id;
+		int id; //should change to n
 		int exponent;
 };
 #endif
