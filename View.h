@@ -17,6 +17,7 @@ class View
 	//	void printPoly(Polynomial&) const;	
 	//	void printIdeal(PolynomialList&) const;
 		void printIdeal(Ideal&) const;
+
 	private:
 		int readInt() const;	
 };

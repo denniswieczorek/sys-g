@@ -9,14 +9,15 @@ class Monomial
 	public:
 		Monomial(int=1);
 		~Monomial();
-		void operator+=(Xn*);	
+		void operator+=(Xn*);
+		void operator-=(Xn*);	
 		bool operator<(Monomial&);
 		bool operator>(Monomial&);
 		bool operator==(Monomial&);
 		//Monomial& operator =(const Monomial&);
 		int getNumVars();		
 		
-		//Monomial& operator*(Monomial*);
+		Monomial* operator*(Monomial*);
 
 		//int getNumMonomials
 	

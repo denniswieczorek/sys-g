@@ -13,8 +13,10 @@ class Ideal
 		int getNumPolys();
 		LinkedList<Polynomial>& getMembers();
 		void operator+=(Polynomial*);
-				
-
+		void operator-=(Polynomial*);
+		void simplify();
+					
+	
 
 	
 	private:

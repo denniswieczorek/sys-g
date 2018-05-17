@@ -11,12 +11,15 @@ class Polynomial
 		Polynomial();
 		~Polynomial();
 		void operator+=(Monomial*);
+		void operator-=(Monomial*);
 		bool operator<(Polynomial&);
 		bool operator>(Polynomial&);
 		Polynomial& operator-(Polynomial*);
 		Polynomial& operator*(Monomial*);
 		Monomial* getLeadingTerm(LinkedList<Monomial>&);
-		
+		void simplify();		
+
+
 		int getNumMonomials();
 		LinkedList<Monomial>& getMembers();
 		//bool operator==(Polynomial&);

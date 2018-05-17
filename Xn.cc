@@ -7,7 +7,7 @@
 */
 Xn::Xn(int i, int e)
 {
-	std::cout << "Xn ctor " << std::endl;
+	std::cout << "                Xn ctor " << std::endl;
 	id = i;
 	exponent = e;
 }
@@ -19,7 +19,7 @@ Xn::Xn(int i, int e)
 */
 Xn::~Xn()
 {
-	std::cout << "Xn dtor" << std::endl;
+	std::cout << "                Xn dtor" << std::endl;
 }
 
 /*

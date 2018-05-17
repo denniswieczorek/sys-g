@@ -25,7 +25,7 @@ class LinkedList
 		LinkedList(const LinkedList<T>&);
 		LinkedList& operator=(const LinkedList<T>&);
 		LinkedList& operator+=(T*);
-		//LinkedList& operator-=(T*);
+		LinkedList& operator-=(T*);
 		T* operator[](int);
 		int getSize() const;	
 		
@@ -69,7 +69,8 @@ void LinkedList<T>::deleteNodes(){
 
 template <class T>
 void LinkedList<T>::copyFrom(const LinkedList<T>& cpList)
-{
+{	
+	std::cout << "copy called? " << std::endl;
 	Node* cpCurrNode;
 	cpCurrNode = cpList.head;	
 	head = 0;
@@ -97,9 +98,13 @@ LinkedList<T>& LinkedList<T>::operator = (const LinkedList<T>& rhs)
 	if(this == &rhs){
 		return *this;
 	}
+	std::cout << "dtor in ass" << std::endl;
 
 	//free old mememory
+
 	deleteNodes();
+
+
 	copyFrom(rhs);
 	return *this;	
 	
@@ -137,6 +142,37 @@ LinkedList<T>& LinkedList<T>::operator+=(T* newVar)
 	}
 	
 	newNode->next = currNode;
+	
+	return *this;
+}
+
+
+template <class T>
+LinkedList<T>& LinkedList<T>::operator-=(T* a)
+{
+	Node* currNode, *prevNode;
+
+	currNode = head;
+	prevNode = 0;
+
+	while (currNode != 0) {
+		if (currNode->data == a)
+			break;
+		prevNode = currNode;
+		currNode = currNode->next;
+	}
+	
+	if (currNode == 0) {
+		return *this;
+	}
+	if (prevNode == 0) {
+		head = currNode->next;
+	}
+	else { 
+		prevNode->next = currNode->next;
+	}
+	delete currNode->data;
+	delete currNode;
 	
 	return *this;
 }

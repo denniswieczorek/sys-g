@@ -1,11 +1,23 @@
 #include "Ideal.h"
 
-Ideal::Ideal() { std::cout << "ideal ctor" << std::endl;}
-Ideal::~Ideal() { std::cout << "ideal dtor " << std::endl;}
+Ideal::Ideal() { std::cout << "    ideal ctor" << std::endl;}
+Ideal::~Ideal() { std::cout << "    ideal dtor " << std::endl;}
 
 void Ideal::operator+=(Polynomial* p) { ideal+=p; }
-
+void Ideal::operator-=(Polynomial* p) { ideal-=p; }
 int Ideal::getNumPolys() { return ideal.getSize(); }
+
+void Ideal::simplify()
+{	
+	int index = 0;
+	while(ideal[index] != 0){
+			
+		ideal[index]->simplify();
+		index++;
+				
+	}
+}
+
 
 LinkedList<Polynomial>& Ideal::getMembers() { return ideal; }
 

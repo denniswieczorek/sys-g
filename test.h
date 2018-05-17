@@ -150,6 +150,9 @@ void Test2(Ideal& J) // test that we can do simple appending to the ideal
 	*newM+=newX;
 	newX = new Xn(1,1);
 	*newM+=newX;
+	
+	*newM-=newX;
+
 	*newP+=newM;
 
 	J+=newP;
@@ -158,7 +161,6 @@ void Test2(Ideal& J) // test that we can do simple appending to the ideal
 	
 	//*newP+=newM;
 	J+=newP;
-
 
 
 
@@ -173,15 +175,15 @@ NTBRW
 void Test3(Ideal& J)
 {
 	Polynomial* newP;
-	Monomial* newM, *secM;
+	Monomial* newM;//, *secM;
 	Xn* newX;
 	
 	newP = new Polynomial();	
-	secM = new Monomial(1);
-	newX = new Xn(2,2);
-	*secM+=newX;
-	newX = new Xn(2,2);
-	*secM+=newX;
+	//secM = new Monomial(1);
+//	newX = new Xn(2,2);
+	//*secM+=newX;
+//	newX = new Xn(2,2);
+//	*secM+=newX;
 	//delete secM;
 	newM = new Monomial(1);
 	newX = new Xn(1,1);
@@ -189,16 +191,53 @@ void Test3(Ideal& J)
 	newX = new Xn(1,1);
 	*newM+=newX;
 	//std::cout << secM << < std::endl;
-	*newM = *secM;
+	//*newM = *secM;
 //	delete secM;
-	//newM->simplify();
+//	newM->simplify();
 //	std::cout << secM << std::endl;
 		
-	
+
 
 	*newP+=newM;
+//	newP->simplify();
 	J+=newP;
+//	J.simplify();
 }
+
+//Test the multipilcation of monomials
+void Test4(Ideal& J)
+{
+	Polynomial* newP;
+	Monomial* newM, *secM, *resM;
+	Xn* newX;
+
+	newP = new Polynomial();
+	newM = new Monomial(2);
+	newX = new Xn(1,1);
+	*newM+=newX;
+	newX = new Xn(2,1);
+	*newM+=newX;
+	
+	secM = new Monomial(2);
+	newX = new Xn(1,1);
+	*secM+=newX;
+	newX = new Xn(2,3);
+	*secM+=newX;
+	
+	resM = *secM*newM;
+	delete secM;
+	delete newM;
+	
+	//Monomial *resM = newM;
+	*newP+=resM;	
+
+	J+=newP;
+
+
+}
+
+
+
 
 
 #endif	

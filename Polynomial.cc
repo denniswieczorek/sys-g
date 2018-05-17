@@ -2,11 +2,11 @@
 
 Polynomial::Polynomial() 
 { 
-	std::cout << "poly ctor" <<std::endl;
+	std::cout << "        poly ctor" <<std::endl;
 }
 Polynomial::~Polynomial() 
 {
-	std::cout << "poly dtor" << std::endl;	
+	std::cout << "        poly dtor" << std::endl;	
 }
 
 int Polynomial::getNumMonomials() {return polynomial.getSize(); }
@@ -14,6 +14,49 @@ int Polynomial::getNumMonomials() {return polynomial.getSize(); }
 LinkedList<Monomial>& Polynomial::getMembers() { return polynomial; }
 
 void Polynomial::operator+=(Monomial* m) { polynomial+=(m); }
+void Polynomial::operator-=(Monomial* m) { polynomial-=(m); }
+
+
+
+void Polynomial::simplify()
+{
+
+	int index = 0;
+	//int id = 1;
+	
+	
+	while(polynomial[index] != 0){
+		if(polynomial[index]->getCoeff() == 0){
+			*this-=polynomial[index];
+		}
+		else{
+
+			
+			polynomial[index]->simplify();
+			index++;
+		}
+	}
+	index = 0;
+	while(polynomial[index] != 0){
+		int index2 = index+1;
+		while(polynomial[index2] != 0){		
+			std::cout << *polynomial[index] << " " << *polynomial[index2] << std::endl;	
+			if(*polynomial[index] == *polynomial[index2]){
+				std:: cout << "triggered" << std::endl;
+				polynomial[index]->setCoeff(polynomial[index]->getCoeff() + polynomial[index2]->getCoeff());
+				*this-=polynomial[index2];
+			}
+			else {
+				index2++;
+			}
+		}
+		index++;
+	}
+
+			
+
+	
+}
 
 
 Monomial* Polynomial::getLeadingTerm(LinkedList<Monomial>& m)

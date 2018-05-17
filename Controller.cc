@@ -24,7 +24,13 @@ void Controller::launch() {
 		//	view.printPoly(poly);			
 			view.printIdeal(J);			
 			view.pause();
-		} 
+		}
+		else if (choice == 2) {
+			J.simplify();
+			view.pause();		
+
+			} 
+	
 	
 		else {
 			break;
@@ -41,6 +47,8 @@ void Controller::init()
 {
 	//Test1(J);
 	//Test2(J);	
-	Test3(J);
+	//Test3(J); //will re write
+	Test4(J);
+
 }
 

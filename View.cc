@@ -16,9 +16,10 @@ void View::mainMenu(int& choice) {
 	std::cout << "\n\n" ;
 	std::cout << "Main Menu\n\n";
 	std::cout << "1.Enter A Polynomial\n";
+	std::cout << "2.Simplify \n";
 	std::cout << "0.Exit\n\n";
 	
-	while (!(choice >= 0 && choice <= 1)){
+	while (!(choice >= 0 && choice <= 2)){
 		std::cout << "Enter your selection: ";
 		choice = readInt(); 
 	}
@@ -62,6 +63,8 @@ void View::printIdeal(Ideal& J) const
 {
 	std::cout << std::endl << J << std::endl;
 }
+
+
 
 void View::pause() const {
 	std::string str;

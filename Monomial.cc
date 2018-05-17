@@ -5,14 +5,14 @@
 Monomial::Monomial(int c)
 {
 	coeff = c;
-	std::cout << "monoctor" << std::endl;
+	std::cout << "            monoctor" << std::endl;
 }
 
 Monomial::~Monomial()
 {
-	std::cout<<"mono dtor" <<std::endl;
+	std::cout<<"            mono dtor" << *this <<std::endl;
 	for(int i=0;i<getNumVars();i++){
-	//	delete vars[i];
+		//delete vars[i];
 	}
 
 }
@@ -20,16 +20,32 @@ Monomial::~Monomial()
 int Monomial::getNumVars() { return vars.getSize();}
 
 void Monomial::operator+=(Xn* x) { vars+=(x); }
+void Monomial::operator-=(Xn* x) { vars-=(x); }
 int  Monomial::getCoeff() { return coeff; }
 LinkedList<Xn>& Monomial::getMembers() { return vars; }
 
-/*
-Monomial& Monomial::operator*(Monomial *m)
+
+Monomial* Monomial::operator*(Monomial *m)
 {
-	std::cout<<m->vars.getSize() <<std::endl;
+	int newCoeff = 0;
+	newCoeff = coeff * m->getCoeff();
+	Monomial* resM = new Monomial(newCoeff);
+
+
 	for(int i=0;i<m->vars.getSize(); i++){
-		vars+=(m->getVars()[i]);
+		Xn* newX = new Xn(0,0);// = (m->getMembers()[i]);	
+		*newX = *m->getMembers()[i];		
+		
+		std::cout << newX << " " << m->getMembers()[i] <<std::endl;
+		*resM+=newX;    
+	 }
+	for(int i=0; i<vars.getSize(); i++){
+		Xn* newX = new Xn(0,0);
+		*newX = *getMembers()[i];
+		*resM+=newX;
 	}
+	
+	return resM;
 
 
 //	for(int i=0;i< m->vars.getSize(); i++){
@@ -37,14 +53,11 @@ Monomial& Monomial::operator*(Monomial *m)
 
 	//}
 
-	int newCoeff = 0;
-	newCoeff = coeff * m->getCoeff();
-	coeff = newCoeff;
-	return *this;
+	
 }
 
 
-*/
+
 
 int Monomial::getDeg(LinkedList<Xn>& lk)
 {
@@ -152,15 +165,35 @@ bool Monomial::operator==(Monomial& m)
 	return result;
 }
 
-/*
-NTBRW
-*/
 
 void Monomial::simplify()
 {
 
+	std::cout << *this << std::endl;
+	for(int id = 1; id< getNumVars() +1 ; id++){
+		int deg = 0;
+		int index = 0;
+		while(this->vars[index] !=0 ){
+			if(this->vars[index]->getId() == id){
+				deg+=this->vars[index]->getId();
+				*this-=(this->vars[index]);
+				}
+			else {
+				index++;
+			}
+		}
+		if(deg != 0){
+			Xn* newX = new Xn(id, deg);
+			*this+=newX;
+		}
+		
+	}
+
+
+	
+
 }
-			
+		
 
 std::ostream& operator<<(std::ostream& output, Monomial& x)
 {
