@@ -20,14 +20,14 @@ class LinkedList
 	public:
 		LinkedList();
 		~LinkedList();
-		void copyFrom(const LinkedList<T>&);
-		void deleteNodes();
-		LinkedList(const LinkedList<T>&);
-		LinkedList& operator=(const LinkedList<T>&);
-		LinkedList& operator+=(T*);
-		LinkedList& operator-=(T*);
-		T* operator[](int);
-		int getSize() const;	
+		void copyFrom(const LinkedList<T>&); // used for copy constructor
+		void deleteNodes(); //used for destructor
+		LinkedList(const LinkedList<T>&); //copy constructor
+		LinkedList& operator=(const LinkedList<T>&); //assignment operator
+		LinkedList& operator+=(T*); //add to the list
+		LinkedList& operator-=(T*); //delete an element in a list
+		T* operator[](int);  //get element in list
+		int getSize() const; //return the number of elements in the list
 		
 	private:
 		Node* head;
@@ -35,47 +35,39 @@ class LinkedList
 };
 
 template <class T>
-LinkedList<T>::LinkedList() : head(0) 
-{
-	std::cout << "ll ctor" << std::endl;
-}
+LinkedList<T>::LinkedList() : head(0) {}
+
 
 template <class T>
 LinkedList<T>::~LinkedList() 
 {
-	std::cout << "ll dtor" << std::endl;
 	deleteNodes();
 }
 
-/*
-NTBRW
-*/
-
 template <class T>
-void LinkedList<T>::deleteNodes(){
+void LinkedList<T>::deleteNodes()
+{
 	Node* currNode, *nextNode;
 	currNode = head;
 
-	
 	while(currNode != 0){
 		nextNode = currNode->next;
 		delete currNode->data;		
 		delete currNode;
 		currNode = nextNode;
 	}
-
-
 } 
 
 template <class T>
 void LinkedList<T>::copyFrom(const LinkedList<T>& cpList)
 {	
-	std::cout << "copy called? " << std::endl;
 	Node* cpCurrNode;
 	cpCurrNode = cpList.head;	
 	head = 0;
 	while(cpCurrNode !=0){
-		*this+=cpCurrNode->data;
+		T* newData = new T();
+		*newData = *cpCurrNode->data;
+		*this+=newData;
 		cpCurrNode = cpCurrNode->next;
 		}
 }
@@ -86,29 +78,19 @@ LinkedList<T>::LinkedList(const LinkedList<T>& cpList)
 {	
 	copyFrom(cpList);
 }
-/*
-NTBRW
-*/
-
 
 template <class T>
 LinkedList<T>& LinkedList<T>::operator = (const LinkedList<T>& rhs)
 {
+	std::cout << "assignment called" << std::endl;
 	//check for self assignment
 	if(this == &rhs){
 		return *this;
 	}
-	std::cout << "dtor in ass" << std::endl;
-
-	//free old mememory
 
 	deleteNodes();
-
-
 	copyFrom(rhs);
 	return *this;	
-	
-
 }
 
 

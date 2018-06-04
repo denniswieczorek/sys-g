@@ -9,17 +9,20 @@
 class Xn
 {
 	public:
-		Xn(int, int);
+		Xn();
+		Xn(unsigned int, int);
 		~Xn();
+	
 		int getEx();
 		int getId();
 		void setEx(int);
+	
 		bool operator<(Xn&);
 		bool operator>(Xn&);
 		bool operator==(Xn&);
 		friend std::ostream& operator<<(std::ostream&, Xn&);
 	private:
-		int id; //should change to n
+		unsigned int id; //id = n
 		int exponent;
 };
 #endif

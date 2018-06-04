@@ -7,34 +7,31 @@
 class Monomial
 {
 	public:
-		Monomial(int=1);
+		Monomial();
+		Monomial(int);
 		~Monomial();
-		void operator+=(Xn*);
-		void operator-=(Xn*);	
+
+		int getSize();	//returns the number of Xn's where Xn's may be unsimplified
+		int getNumVars();	//returns the actual number of unique variables in monomial
+		int getCoeff();
+		LinkedList<Xn>& getMembers();
+		int getDeg(); //should be pointer?
+		int getDeg(int);
+	    void setCoeff(int);
+
+
+		void simplify();
+
+    void operator+=(Xn*);
+		void operator-=(Xn*);
 		bool operator<(Monomial&);
 		bool operator>(Monomial&);
 		bool operator==(Monomial&);
-		//Monomial& operator =(const Monomial&);
-		int getNumVars();		
-		
 		Monomial* operator*(Monomial*);
+		Monomial* operator+(Monomial*);//these are stupid
+		Monomial* operator-(Monomial*); //this too
 
-		//int getNumMonomials
-	
-		//simplify function
-		void simplify(); 
-/*
-NTBRW
-*/
-
-
-
-		int getDeg(LinkedList<Xn>&); //should be pointer?
-		int getDeg(LinkedList<Xn>&,int);
-		
-		LinkedList<Xn>& getMembers();
-		int getCoeff();
-		void setCoeff(int);	
+		//Monomial& operator =(const Monomial&);	//might not be needed
 		friend std::ostream& operator<<(std::ostream&, Monomial&);
 
 	private:

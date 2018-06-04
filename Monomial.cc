@@ -1,28 +1,44 @@
 #include "Monomial.h"
 
-
-
+//Constructors
+Monomial::Monomial()
+{
+	coeff = 0;
+}
 Monomial::Monomial(int c)
 {
 	coeff = c;
 	std::cout << "            monoctor" << std::endl;
 }
 
+//Destructors
 Monomial::~Monomial()
 {
 	std::cout<<"            mono dtor" << *this <<std::endl;
-	for(int i=0;i<getNumVars();i++){
-		//delete vars[i];
-	}
-
 }
 
-int Monomial::getNumVars() { return vars.getSize();}
+int Monomial::getSize() { return vars.getSize();}
+
+
+//crude version
+int Monomial::getNumVars() 
+{
+	int maxId = 1;
+	for(int i=0; i<getSize(); i++){
+		if(vars[i]->getId() > maxId){
+			maxId = vars[i]->getId();
+		}
+	}
+	return maxId;
+}
 
 void Monomial::operator+=(Xn* x) { vars+=(x); }
 void Monomial::operator-=(Xn* x) { vars-=(x); }
 int  Monomial::getCoeff() { return coeff; }
 LinkedList<Xn>& Monomial::getMembers() { return vars; }
+
+
+
 
 
 Monomial* Monomial::operator*(Monomial *m)
@@ -33,7 +49,7 @@ Monomial* Monomial::operator*(Monomial *m)
 
 
 	for(int i=0;i<m->vars.getSize(); i++){
-		Xn* newX = new Xn(0,0);// = (m->getMembers()[i]);	
+		Xn* newX = new Xn(0,0);
 		*newX = *m->getMembers()[i];		
 		
 		std::cout << newX << " " << m->getMembers()[i] <<std::endl;
@@ -46,35 +62,33 @@ Monomial* Monomial::operator*(Monomial *m)
 	}
 	
 	return resM;
-
-
-//	for(int i=0;i< m->vars.getSize(); i++){
-	//	vars+=(m->vars[i]);
-
-	//}
-
 	
+}/*
+Monomial& Monomial::operator =(const Monomial& m)
+{
+	std::cout <<"mono ass" << std::endl;
+	coeff = m.coeff;
+	vars = m.vars;
+
 }
+*/
 
-
-
-
-int Monomial::getDeg(LinkedList<Xn>& lk)
+int Monomial::getDeg()
 {
 	int degree = 0;
-	for(int i=0; i< lk.getSize(); i++){
-		degree += lk[i]->getEx();
+	for(int i=0; i< getSize(); i++){
+		degree += vars[i]->getEx();
 	}
 	return degree;
 }
 void Monomial::setCoeff(int c) { coeff = c; }
 
-int Monomial::getDeg(LinkedList<Xn>& lk, int id) //id
+int Monomial::getDeg(int id) 
 {
 	int degree = 0;
-	for(int i=0;i<lk.getSize();i++){
-		if(lk[i]->getId() == id){
-			degree+= lk[i]->getEx();
+	for(int i=0;i< getSize();i++){
+		if(vars[i]->getId() == id){
+			degree+= vars[i]->getEx();
 		}
 	}
 	return degree;
@@ -85,16 +99,16 @@ bool Monomial::operator<(Monomial& m)
 {
 	bool result = false;
 
-	if(getDeg(vars) < getDeg(m.vars) ){
+	if(getDeg() < m.getDeg() ){
 		result = true;
 	}
-	else if(getDeg(vars) == getDeg(m.vars) ) {
+	else if(getDeg() == m.getDeg() ) {
 		for(int i = 0; i< vars.getSize(); i++){
-			if(getDeg(vars,i) < getDeg(m.vars,i)){
+			if(getDeg(i) < m.getDeg(i)){
 				result = true;
 				break;
 			} 
-			else if(getDeg(vars,i) > getDeg(m.vars,i)){
+			else if(getDeg(i) > m.getDeg(i)){
 				result = false;
 				break;
 			}
@@ -106,30 +120,22 @@ bool Monomial::operator<(Monomial& m)
 
 	return result;	
 }
-/*
 
-Monomial& Monomial::operator = (const Monomial& rhs)
-{
-	std::cout << " ass m " << std::endl;
-	coeff = rhs.coeff;
-	vars = rhs.vars;
-}
-*/
 
 bool Monomial::operator>(Monomial& m)
 {
 	bool result = false;
 
-	if(getDeg(vars) > getDeg(m.vars) ){
+	if(getDeg() > m.getDeg() ){
 		result = true;
 	}
-	else if(getDeg(vars) ==getDeg(m.vars) ) {
+	else if(getDeg() == m.getDeg() ) {
 		for(int i = 0; i < vars.getSize(); i++){
-			if(getDeg(vars,i) > getDeg(m.vars,i)){
+			if(getDeg(i) > m.getDeg(i)){
 				result = true;
 				break;
 			} 
-			else if(getDeg(vars,i) < getDeg(m.vars,i)){
+			else if(getDeg(i) < m.getDeg(i)){
 				result = false;
 				break;
 			}
@@ -147,13 +153,13 @@ bool Monomial::operator==(Monomial& m)
 	bool result = false;
 	
 
-	if(getDeg(vars) ==getDeg(m.vars)){
+	if(getDeg() == m.getDeg()){
 		
 		if(vars.getSize() == m.vars.getSize()){
 
 			for(int i = 0; i<vars.getSize();i++){
-				if(getDeg(vars,i) == getDeg(m.vars,i)){
-					std::cout<< getDeg(vars,i) << " , " << getDeg(m.vars,i) << std::endl;
+				if(getDeg(i) == m.getDeg(i)){
+					std::cout<< getDeg(i) << " , " << m.getDeg(i) << std::endl;
 					if(i == vars.getSize()-1){
 						result = true;
 						break;
@@ -170,7 +176,13 @@ void Monomial::simplify()
 {
 
 	std::cout << *this << std::endl;
-	for(int id = 1; id< getNumVars() +1 ; id++){
+		
+	int idIndex = 0;
+	
+
+	while(vars[idIndex] != 0){
+		int id = vars[idIndex]->getId();
+		std::cout << id << std::endl;
 		int deg = 0;
 		int index = 0;
 		while(this->vars[index] !=0 ){
@@ -187,8 +199,13 @@ void Monomial::simplify()
 			*this+=newX;
 		}
 		
+		
+	idIndex++;
+		
+		
+		
+	
 	}
-
 
 	
 

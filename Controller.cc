@@ -10,28 +10,36 @@ Controller::Controller()
 }
 
 void Controller::launch() {
-	
+
 	int choice;
 
 	while(1) {
 		choice =-1;
 		view.mainMenu(choice);
-	
+
 		if (choice == 1) {
 			//view.printXns(xl);
-			//view.printMonomial(mm);	
-		//	view.printMonomials(ml);		
-		//	view.printPoly(poly);			
-			view.printIdeal(J);			
+			//view.printMonomial(mm);
+		//	view.printMonomials(ml);
+		//	view.printPoly(poly);
+			view.printIdeal(J);
 			view.pause();
 		}
 		else if (choice == 2) {
+				view.printGrobner(G);
+				view.pause();
+		}
+		else if (choice == 3) {
 			J.simplify();
-			view.pause();		
 
-			} 
-	
-	
+			view.pause();
+
+
+			}
+		else if (choice == 4) {
+			runTest();
+		}
+
 		else {
 			break;
 		}
@@ -45,10 +53,10 @@ void Controller::launch() {
 
 void Controller::init()
 {
-	//Test1(J);
-	//Test2(J);	
-	//Test3(J); //will re write
-	Test4(J);
-
+	Populate(J);
 }
 
+void Controller::runTest()
+{
+	TestGrobner(J,G);
+}

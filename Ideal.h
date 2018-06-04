@@ -4,6 +4,7 @@
 #include "LinkedList.h"
 #include "Polynomial.h"
 
+
 class Ideal 
 {
 	friend std::ostream& operator<<(std::ostream&, Ideal&);
@@ -15,6 +16,7 @@ class Ideal
 		void operator+=(Polynomial*);
 		void operator-=(Polynomial*);
 		void simplify();
+		Polynomial* computeResolvent(Polynomial&, Polynomial&);
 					
 	
 

@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "Ideal.h"
+#include "Grobner.h"
 
 class Controller
 {
@@ -14,7 +15,9 @@ class Controller
 	private:
 		View view;
 		void init();
+		void runTest();
 		Ideal J;
+		Grobner G;
 
 };
 

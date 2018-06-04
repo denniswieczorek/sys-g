@@ -59,12 +59,12 @@ void Polynomial::simplify()
 }
 
 
-Monomial* Polynomial::getLeadingTerm(LinkedList<Monomial>& m)
+Monomial* Polynomial::getLeadingTerm()
 {
-	Monomial* max = m[0];
-	for(int i=0;i<m.getSize(); i++){
-		if(m[i] > max){
-			max = m[i];
+	Monomial* max = polynomial[0];
+	for(int i=0;i<polynomial.getSize(); i++){
+		if(*polynomial[i] > *max){
+			max = polynomial[i];
 		}
 	}
 	return max;
@@ -75,46 +75,81 @@ Monomial* Polynomial::getLeadingTerm(LinkedList<Monomial>& m)
 bool Polynomial::operator<(Polynomial& p)
 {
 	bool result = false;
-	if(getLeadingTerm(polynomial) < getLeadingTerm(p.polynomial)){
+	if(getLeadingTerm() < p.getLeadingTerm()){
 		result = true;
 	}
 	return result;
 }
 
-/*
-Need to redefine
-Polynomial& Polynomial::operator-(Polynomial* p)
+
+Polynomial* Polynomial::operator+(Polynomial* p)
 {
-	p->polynomial.negate();
-	for(int i=0; i<p->polynomial.getSize(); i++){
-		polynomial+=(p->polynomial[i]);
-	}	
-	return *this;
+
+	Polynomial* newP = new Polynomial();
+	Monomial* newM;
+	for(int i=0; i<getNumMonomials(); i++){
+		newM = new Monomial(1);
+
+		*newM = *polynomial[i];
+
+		*newP+=newM;
+
+	}
+	for(int i=0;i<p->getNumMonomials(); i++){
+				Monomial* newM = new Monomial(1);
+		*newM = *p->polynomial[i];
+		*newP+=newM;
+
+
+	}
+
+	return newP;
+}
+Polynomial* Polynomial::operator-(Polynomial* p)
+{
+	Polynomial* newP = new Polynomial();
+	
+	Monomial* newM = new Monomial(-1);
+	
+	p = *p*newM; // this is going to change p
+	
+	newP = *p + this;
+
+	return newP;
+		
 	
   
 }
-*/
 
-/*
 
-Polynomial& Polynomial::operator*(Monomial* m) 
+
+Polynomial* Polynomial::operator*(Monomial* m) 
 {
-  polynomial*m;
-  return *this;
+	Polynomial* resP = new Polynomial();	
+  	for(int i=0; i< getNumMonomials(); i++){
+		Monomial* newM =  new Monomial(m->getCoeff() ); // this might be silly
+		newM = *polynomial[i] * m; //because i am just overwritting coeff
+		*resP+=newM;
+	}
+	return resP;
+	
 }
 
-*/
 
 bool Polynomial::operator>(Polynomial& p)
 {
 	bool result = false;
-	if(getLeadingTerm(polynomial) > getLeadingTerm(p.polynomial)){
+	if(getLeadingTerm() > p.getLeadingTerm()){
 		result = true;
 	}
 	return result;
 }
 
+
+
+
 /*
+
 Polynomial* Polynomial::compueResolvent(Polynomial1& f,Polynomial2 g){
 
 Monomial m1 = LM(F);

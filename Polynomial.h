@@ -5,6 +5,7 @@
 #include "Monomial.h"
 #include "LinkedList.h"
 
+
 class Polynomial
 {
 	public:
@@ -14,18 +15,21 @@ class Polynomial
 		void operator-=(Monomial*);
 		bool operator<(Polynomial&);
 		bool operator>(Polynomial&);
-		Polynomial& operator-(Polynomial*);
-		Polynomial& operator*(Monomial*);
-		Monomial* getLeadingTerm(LinkedList<Monomial>&);
+		Polynomial* operator-(Polynomial*);
+		Polynomial* operator*(Monomial*);
+		Polynomial* operator+(Polynomial*);
+		Monomial* getLeadingTerm();
 		void simplify();		
+
+	
 
 
 		int getNumMonomials();
 		LinkedList<Monomial>& getMembers();
 		//bool operator==(Polynomial&);
-		//Polynomial* computeResolvent(Polynomial&);
+	//	Polynomial* computeResolvent(Polynomial&, Polynomial&);
 		//Polynomial* reduce(Polynomial&);
-	
+		
 
 		friend std::ostream& operator<<(std::ostream&, Polynomial&);	
 		

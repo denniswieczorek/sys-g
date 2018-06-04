@@ -7,238 +7,126 @@
 #include "Xn.h"
 #include "Ideal.h"
 
-
-void Test1(Ideal& J) // test that we can do simple appending to the ideal
+void Populate(Ideal& J)
 {
-	Polynomial* newP;
-	Monomial* newM;
 	Xn* newX;
-	
-
-	//f=(x^2)(y^4)(z^3) + 2x^2 + x^2 + xy + -5z^2 + 1
-	newP = new Polynomial();
-		
-
-	//(x^2)(y^4)(z^3)
+    Monomial* newM;
+	//f = x^2 + xy^2 + y
+	Polynomial* f;
+	f = new Polynomial();
+	//x^2	
 	newM = new Monomial(1);
-	newX = new Xn(1,2); //x = 1, y = 2, z = 3
-	*newM+=newX;
-	newX = new Xn(2,4);
-	*newM+=newX;
-	newX = new Xn(3,3);
-	*newM+=newX;
-	*newP+=newM;
-
-	//2x^2
-	newM = new Monomial(2);
 	newX = new Xn(1,2);
 	*newM+=newX;
-	*newP+=newM;
-
-	//x^2
+	*f+=newM;
+	//xy^2
 	newM = new Monomial(1);
-	newX = new Xn(1,2);	
-	*newM+=newX;
-	*newP+=newM;
-	
-	//xy
-	newM = new Monomial(0);
 	newX = new Xn(1,1);
 	*newM+=newX;
+	newX = new Xn(2,2);
+	*newM+=newX;
+	*f+=newM;
+	//y
+	newM = new Monomial(1);
 	newX = new Xn(2,1);
 	*newM+=newX;
-	*newP+=newM;
-	
-	//-5z^2
-	newM = new Monomial(-5);
-	newX = new Xn(3,2);
-	*newM+=newX;
-	*newP+=newM;
+	*f+=newM;
 
+
+	//g = xy^3
+	Polynomial* g;
+	g = new Polynomial();
+	//xy^3
+	newM = new Monomial(7);
+	newX = new Xn(1,1);
+	*newM+=newX;
+	newX = new Xn(2,3);
+	*newM+=newX;
+	*g+=newM;
+
+
+	//h = y^5+1
+	Polynomial* h;
+	h = new Polynomial();
+	//y^5
+	newM = new Monomial(4);
+	newX = new Xn(2,5);	
+	*newM+=newX;
+	*h+=newM;	
 	//1
 	newM = new Monomial(1);
-	*newP+=newM;
+	*h+=newM;
 
-	J+=newP;
+	
 
-}	
-void Test2(Ideal& J) // test that we can do simple appending to the ideal
+	J+=f;
+	J+=g;
+	J+=h;
+}
+
+void TestDel(Ideal& J)
 {
-	Polynomial* newP;
-	Monomial* newM;
-	Xn* newX;
-	//J=<f,g>
+	Polynomial * p = J.getMembers()[0];
+	J-=p;		
+}
 
-	//f=(x^2)(y^4)(z^3) + 2x^2 + x^2 + xy + -5z^2 + 1
-	newP = new Polynomial();
-		
-
-	//(x^2)(y^4)(z^3)
-	newM = new Monomial(1);
-	newX = new Xn(1,2); //x = 1, y = 2, z = 3
-	*newM+=newX;
-	newX = new Xn(2,4);
-	*newM+=newX;
-	newX = new Xn(3,3);
-	*newM+=newX;
-	*newP+=newM;
-
-	//2x^2
-	newM = new Monomial(2);
-	newX = new Xn(1,2);
-	*newM+=newX;
-	*newP+=newM;
-
-	//x^2
-	newM = new Monomial(1);
-	newX = new Xn(1,2);	
-	*newM+=newX;
-	*newP+=newM;
-	
-	//xy
-	newM = new Monomial(0);
-	newX = new Xn(1,1);
-	*newM+=newX;
-	newX = new Xn(2,1);
-	*newM+=newX;
-	*newP+=newM;
-	
-	//-5z^2
-	newM = new Monomial(-5);
-	newX = new Xn(3,2);
-	*newM+=newX;
-	*newP+=newM;
-
-	//1
-	newM = new Monomial(1);
-	*newP+=newM;
-
-	J+=newP;
-/* ******************************* */
-	//g=-xy-xx+zzz+xx 
-	newP = new Polynomial();
-
-	//-xy
-	newM = new Monomial(-1);
-	newX = new Xn(1,1);
-	*newM+=newX;
-	newX = new Xn(2,1);
-	*newM+=newX;
-	*newP+=newM;
-	
-	//-xx
-	newM = new Monomial(-1);
-	newX = new Xn(1,1);
-	*newM+=newX;
-	newX = new Xn(1,1);
-	*newM+=newX;
-	*newP+=newM;
-	
-	//zzz
-	newM = new Monomial(1);
-	newX = new Xn(3,1);
-	*newM+=newX;
-	newX = new Xn(3,1);
-	*newM+=newX;
-	newX = new Xn(3,1);
-	*newM+=newX;
-	*newP+=newM;
-
-	//xx
-	newM = new Monomial(1);
-	newX = new Xn(1,1);
-	*newM+=newX;
-	newX = new Xn(1,1);
-	*newM+=newX;
-	
-	*newM-=newX;
-
-	*newP+=newM;
-
-	J+=newP;
-	
-	newP = new Polynomial();
-	
-	//*newP+=newM;
-	J+=newP;
+//test simplify
+//1+1 needs to reduce to 2 
+//check if simplifying is needed before preforming operation
 
 
 
-}	
+//test assignment
+void TestAss(Ideal& J)
+{
+	Polynomial* p;
+	p = new Polynomial();
+	*p = *J.getMembers()[0];
+	J+=p;
+}
+//test copy
+void TestCopy(Ideal& J)
+{
+	Polynomial* p = J.getMembers()[0];
+	J+=p;
+}
+//test - of polynomials
+void TestSub(Ideal& J)
+{
+	Polynomial* p;
+	p = *J.getMembers()[0] - J.getMembers()[0];
+	J+=p;
+}
+//test + polynomials
+void TestAdd(Ideal& J)
+{
+	Polynomial* p;
+	p = *J.getMembers()[0] + J.getMembers()[0];
+	J+=p;
+}
+//test * polynomials
 
 /*
-NTBRW
+	Compute Resolvent
 */
-
-
-//Test the simplification of a monomial
-void Test3(Ideal& J)
+//test get leading term
+void TestLT(Ideal& J)
 {
-	Polynomial* newP;
-	Monomial* newM;//, *secM;
-	Xn* newX;
-	
-	newP = new Polynomial();	
-	//secM = new Monomial(1);
-//	newX = new Xn(2,2);
-	//*secM+=newX;
-//	newX = new Xn(2,2);
-//	*secM+=newX;
-	//delete secM;
-	newM = new Monomial(1);
-	newX = new Xn(1,1);
-	*newM+= newX;
-	newX = new Xn(1,1);
-	*newM+=newX;
-	//std::cout << secM << < std::endl;
-	//*newM = *secM;
-//	delete secM;
-//	newM->simplify();
-//	std::cout << secM << std::endl;
-		
-
-
-	*newP+=newM;
-//	newP->simplify();
-	J+=newP;
-//	J.simplify();
-}
-
-//Test the multipilcation of monomials
-void Test4(Ideal& J)
-{
-	Polynomial* newP;
-	Monomial* newM, *secM, *resM;
-	Xn* newX;
-
-	newP = new Polynomial();
-	newM = new Monomial(2);
-	newX = new Xn(1,1);
-	*newM+=newX;
-	newX = new Xn(2,1);
-	*newM+=newX;
-	
-	secM = new Monomial(2);
-	newX = new Xn(1,1);
-	*secM+=newX;
-	newX = new Xn(2,3);
-	*secM+=newX;
-	
-	resM = *secM*newM;
-	delete secM;
-	delete newM;
-	
-	//Monomial *resM = newM;
-	*newP+=resM;	
-
-	J+=newP;
+	std::cout << *J.getMembers()[2]->getLeadingTerm()  << std::endl;
 
 
 }
 
+void TestCom(Ideal& J)
+{
+	Polynomial*h = J.computeResolvent(*J.getMembers()[0],*J.getMembers()[1]);	
+	J+=h;
+}	
 
-
-
+void TestGrobner(Ideal J, Grobner& G)
+{
+	G.initGrobnerBasis(J);
+}
 
 #endif	
 
