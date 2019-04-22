@@ -9,12 +9,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->polyEdit->setFocus();
     model = new QStringListModel(this);
-    Polynomial p1 = Polynomial("(X.0)^2+1(X.1)^2-1");
-    g.addPolynomial(p1);
-    Polynomial p2 = Polynomial("(X.0)(X.1)");
-    g.addPolynomial(p2);
-    Polynomial p3 = Polynomial("(X.1)^3-1(X.1)");
-    g.addPolynomial(p3);
 
 }
 

@@ -14,10 +14,15 @@ MODIFIERS
 
 void Groebner::buchberger(){
  // while(allResolventsComputed() == 0){
+
       std::cout << "entering algorithm" << std::endl;
+    for(int i=0; i <10; i++){
+
+
     reduce_ideal();
     compute_resolvents();
-   // reduce_ideal();
+    reduce_ideal();
+  }
   //}
 }
 
@@ -40,47 +45,42 @@ int Groebner::allResolventsComputed() {
 }
 
 
-/*
-void Groebner::buchberger1(){
-    int i =0;
-    int j=0;
-    while(i<number_of_members() || j < number_of_members()){
-        if(i!=j){
-            if(ideal[i].number_of_terms() == 0){
-                ideal.erase(ideal.begin()+i);
-            }else if(ideal[j].number_of_terms()==0){
-                ideal.erase(ideal.begin()+j);
-            } else {
-                ideal[i].simplify_coefficients();
-                ideal[j].simplify_coefficients();
-                if(reduce_polynomials(ideal[i],ideal[j])==1){
-                    i=0;
-                    j=0;
-                }
-            }
-        }
-        else if(j==number_of_members()-1){
-            j=0;
-            i++;
-        }
-        else {
-            j++;
-        }
-    }
-}
-
-*/
 void Groebner::reduce_ideal(){
   //make every function primitive
+  //function looks backward in case a function has reduced something previously, its why when there are two members it will check to reduce twice 1 with 2 and 2 with 1
 
   for(int i = 0; i< number_of_members(); i++){
     for(int j=0; j<number_of_members(); j++){
+      std::cout << std::endl;
+
+      std::cout << *this << std::endl;
+      std::cout << std::endl;
+      std::cout << "***********************" << std::endl;
+        for(int i=0;i<number_of_members(); i++){
+
+          std::cout << ideal[i].get_poly_id() << ",";
+        }
+        std::cout << std::endl;
+        for(int i=0;i<number_of_members(); i++){
+
+          std::cout << ideal[i].get_leading_term() << ",";
+        }
+      std::cout << std::endl;
+      std::cout << "***********************" << std::endl;
+
       if(i!=j){
+
+
         if(ideal[i].number_of_terms() == 0){
           ideal.erase(ideal.begin()+i);
+          i=0;
+          j=0;
         }
         else if(ideal[j].number_of_terms() == 0){
+
           ideal.erase(ideal.begin() + j);
+          i =0;
+          j=0;
         }
         else{
           ideal[i].simplify_coefficients();
@@ -108,9 +108,14 @@ int Groebner::compute_resolvent(Polynomial& f, Polynomial& g){
   g_factor.set_coefficient(LCM(gt.get_coefficient(), ft.get_coefficient())/gt.get_coefficient());
 
   Polynomial resolvent = Polynomial();
+  std::cout << "      resid" << resolvent.get_poly_id() << std::endl;
   resolvent = (f*f_factor);
+  std::cout << "      resid" << resolvent.get_poly_id() << std::endl;
+
   Polynomial p2 = g*g_factor;
   resolvent = resolvent - p2;
+  std::cout << "      resid" << resolvent.get_poly_id() << std::endl;
+
   std::vector<int> comp;
   comp.push_back(f.get_poly_id());
   comp.push_back(g.get_poly_id());
@@ -124,8 +129,11 @@ int Groebner::compute_resolvent(Polynomial& f, Polynomial& g){
 }
 
 int Groebner::check_if_resolvent_computed(Polynomial& f, Polynomial& g){
+
   for(int i=0; i<comparisons.size(); i++){
     if(comparisons[i].size() == 2){
+
+      std::cout << "    compar  [" << comparisons[i][0] << "," << comparisons[i][1] << "]" << std::endl;
       if(f.get_poly_id() == comparisons[i][0] || f.get_poly_id() == comparisons[i][1]){
         if(g.get_poly_id() == comparisons[i][0] || g.get_poly_id() == comparisons[i][1]){
           return 1;
@@ -137,7 +145,8 @@ int Groebner::check_if_resolvent_computed(Polynomial& f, Polynomial& g){
 }
 
 int Groebner::compute_resolvents(){
-  if(number_of_members() >=2){
+  std::cout << "=================================================" << std::endl;
+    if(number_of_members() >=2){
     int base = 0;
     while(base < number_of_members() - 1){
       int next = base+1;//TODO FIX THE POLY IDS
@@ -205,7 +214,9 @@ int Groebner::reduce_polynomial_by_leading_term(Polynomial& f, Polynomial& g){
   }
   //TODO clean this up
   int comm = ABS(LCM(f.get_leading_term().get_coefficient(), g.get_leading_term().get_coefficient()));
-
+  //int comm = LCM(f.get_leading_term().get_coefficient(), g.get_leading_term().get_coefficient());
+  std::cout << "      comm  = " << comm << std::endl;
+  std::cout << "ynk     " << comm/g.get_leading_term().get_coefficient() << std::endl;
   std::cout << "        " << comm/f.get_leading_term().get_coefficient() << "[" << f <<"]" << "     -    " << comm/g.get_leading_term().get_coefficient() << "(" << factor << ")["<< g  << "]" << std::endl;
   f = f* (comm/f.get_leading_term().get_coefficient());
   g = g * (comm/g.get_leading_term().get_coefficient());
@@ -228,9 +239,7 @@ int Groebner::reduce_polynomial_by_leading_term(Polynomial& f, Polynomial& g){
 Term Groebner::compute_difference(Term t1, Term t2){ //should change this to a terms thing
   //TODO probably don't want this as first term can be multiplied to make like term
   if(t1 > t2 || t1.share_monomial(t2)){
-    std::cout << "calcluatoing diff btwn  " << t1 << " and " << t2 << std::endl;
     Term newFactor = t1/t2;
-    std::cout << " result is " << newFactor << std::endl;
     return newFactor;
   }
   else {

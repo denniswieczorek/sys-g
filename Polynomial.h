@@ -12,6 +12,10 @@ public:
   Polynomial();
   Polynomial(std::string);
   //Polynomial(std::vector<Term>&)
+  //assignment
+  void operator=(const Polynomial&);
+
+
   //ACCESS
   int get_poly_id() const;
   int number_of_terms() const;
@@ -30,6 +34,7 @@ public:
   Polynomial operator*(int);
   void simplify_coefficients();
   QString toQString() const;
+  void set_num_of_variables(int);
   //RELATIONS
   bool operator<(Polynomial&);
   bool operator>(Polynomial&);
@@ -41,6 +46,7 @@ private:
   Term leading_term;
   int poly_id;
   static int id_incrementer;
+  static int number_variables;
 friend std::ostream& operator<<(std::ostream&, Polynomial&);
 };
 #endif

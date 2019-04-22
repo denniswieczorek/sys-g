@@ -3,7 +3,7 @@
 /********************
 STATIC VARIABLE
 ********************/
-int Term::max_variable = 1; //no variable id equal to *this or greater has been discovered
+int Term::max_variable = 2; //no variable id equal to *this or greater has been discovered
 /********************
 CONSTRUCTOR
 ********************/
@@ -91,7 +91,6 @@ void Term::set_coefficient(int c) { coefficient = c; }
 Term Term::operator*(Xn& x){
   Term tempP = *this;
   int index = x.get_id();
-  std::cout << tempP << " " << x <<std::endl;
   if(index+1 > max_variable){
     Xn newX = Xn(0,0);
     for(int i = max_variable; i < index+1; i++){
@@ -101,7 +100,6 @@ Term Term::operator*(Xn& x){
     max_variable = index+1;
 
   }
-  std::cout << x.get_exponent() << std::endl;
   int new_exponent = tempP.get_degree_of_X(index) + x.get_exponent();
   tempP[index].set_exponent(new_exponent);
   tempP.degree += x.get_exponent();
@@ -124,8 +122,6 @@ Term Term::operator+(Term& t){
 Term Term::operator/(Xn& x){
   Term tempT = *this;
   int index = x.get_id();
-  std::cout << " inde" << index << std::endl;
-  std::cout << tempT[index].get_exponent() << " - " << x.get_exponent() << std::endl;
   int new_exponent = tempT[index].get_exponent() - x.get_exponent();
   if(new_exponent<0){
     //Invalid for polynomials
@@ -161,20 +157,15 @@ Term Term::operator/(Term t){
   Term tempT = *this;
   tempT.set_coefficient(1);
   for(int i=0; i< t.number_of_variables(); i++){
-    std::cout << " diivivi  " << tempT << " / " << t[i] << std::endl;
     tempT = tempT/t[i];
-    std::cout << "result " << tempT << std::endl;
   }
   return tempT;
 }
 
 Term Term::operator*(Term& t){
   Term tempT = Term(coefficient * t.coefficient);
-  std::cout << "max_variable=" << max_variable << std::endl;
   for(int i =0; i< max_variable; i++){
 
-    std::cout << "      monomial[i].e = " << monomial[i].get_exponent() << std::endl;
-    std::cout << "      t[i].e = " << t[i].get_exponent() << std::endl;
     Xn tempX = Xn(i,monomial[i].get_exponent() + t[i].get_exponent());
     tempT = tempT * tempX;
   }
@@ -246,9 +237,9 @@ DISPLAY
 std::ostream& operator<<(std::ostream& output, Term& t){
   output << t.coefficient;
   for(int i = 0; i < t.number_of_variables(); i++){
-  //  if(t[i].get_exponent() != 0){
+    if(t[i].get_exponent() != 0){
       output << t[i];
-  //  }
+    }
   }
   return output;
 }

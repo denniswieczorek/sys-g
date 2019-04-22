@@ -4,6 +4,7 @@
 STATIC VARIABLE
 ********************/
 int Polynomial::id_incrementer = 1;
+int Polynomial::number_variables = 2;
 /********************
 CONSTRUCTOR
 ********************/
@@ -41,6 +42,16 @@ Polynomial::Polynomial(std::string str){
   }}
 }
 
+
+//copy
+void Polynomial::operator=(const Polynomial& p){
+    leading_term = p.leading_term;
+    polynomial = p.polynomial;
+
+}
+
+
+
 /********************
 ACCESS
 ********************/
@@ -68,6 +79,9 @@ Term& Polynomial::operator[](unsigned int i)  { return polynomial[i]; }
 /********************
 MODIFIERS
 ********************/
+void Polynomial::set_num_of_variables(int z) { number_variables = z;}
+
+
 Polynomial Polynomial::operator+(Term& t){
   if(t > leading_term){
     leading_term = t;
@@ -96,20 +110,22 @@ Polynomial Polynomial::operator*(int z) {
 
 Polynomial Polynomial::operator-(Polynomial& p){ //TODO since I am passing by reference I need to be careful that I am not changing
   Polynomial tempP = *this;
+  std::cout << "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&" << std::endl;
+  std::cout << tempP << "     " << tempP.get_leading_term() << std::endl;
   Polynomial tempP2 = p*(-1);
   tempP = tempP + tempP2;
+  std::cout << tempP << "     " << tempP.get_leading_term() << std::endl;
+
   tempP.simplify();
+
   return tempP;
 }
 
 Polynomial Polynomial::operator*(Term& t){
   Polynomial tempP = *this;
-std::cout << "polynomial*term:  " << tempP << " " << t << std::endl;
   for(int i=0; i < number_of_terms() ; i++){
-    std::cout << "  multiplying: " << tempP[i] << " with " << t << std::endl;
 
     tempP[i] = tempP[i]*t;
-    std::cout <<"result is " << tempP[i] << std::endl;
   }
   tempP.leading_term = leading_term*t;
   return tempP;
@@ -117,20 +133,23 @@ std::cout << "polynomial*term:  " << tempP << " " << t << std::endl;
 
 void Polynomial::simplify_coefficients(){
   if(number_of_terms()>=2){
-    int gcd = GCD(polynomial[0].get_coefficient(),polynomial[1].get_coefficient());
+    int gcd = GCD(ABS(polynomial[0].get_coefficient()),ABS(polynomial[1].get_coefficient()));
     for(int i=2; i<number_of_terms(); i++){
-      gcd = GCD(gcd, polynomial[i].get_coefficient());
+      gcd = GCD(gcd, ABS(polynomial[i].get_coefficient()));
     }
-    gcd = ABS(gcd);
+  //  gcd = ABS(gcd);
     if(gcd != 1) {
       for(int i=0; i<number_of_terms(); i++){
         if(polynomial[i].get_coefficient()/gcd == 0){
+          std::cout << polynomial[i] << "   " << gcd << std::endl;
           std::cout << "ERROR: GCD(A,B) > A OR B" << std::endl;
         }
         polynomial[i].set_coefficient(polynomial[i].get_coefficient()/gcd);
       }
     }
     if(leading_term.get_coefficient()/gcd == 0){
+      std::cout << leading_term << "   " << gcd << std::endl;
+
       std::cout << "ERROR: GCD(A,B) > A OR B" << std::endl;
     }
     leading_term.set_coefficient(leading_term.get_coefficient()/gcd);
@@ -173,13 +192,6 @@ void Polynomial::simplify(){
 
         if(polynomial[index].get_coefficient() == 0){
           polynomial.erase(polynomial.begin()+index);
-          Term lt = polynomial[0];
-          for(int j=1; j<number_of_terms(); j++){
-            if(polynomial[j] > lt){
-              lt = polynomial[j];
-            }
-          }
-          leading_term = lt;
           next = index;
         }
 
@@ -188,6 +200,16 @@ void Polynomial::simplify(){
     }
     index++;
     }
+    if(number_of_terms() >0){
+    Term lt = polynomial[0];
+    for(int j=1; j<number_of_terms(); j++){
+      if(polynomial[j] > lt){
+        lt = polynomial[j];
+      }
+    }
+    std::cout << "setting leading term of " << *this << " to this " << lt << std::endl;
+    leading_term = lt;
+  }
 }
 
 /*Polynomial& Polynomial::make_primitive(){}
