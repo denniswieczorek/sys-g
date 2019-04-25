@@ -34,7 +34,11 @@ void MainWindow::on_addPolyButton_clicked()
 void MainWindow::on_calculate_clicked()
 {
     g.buchberger();
-    ui->answerEdit->setText(g.toQString());
+    if(g.number_of_members() ==0){
+        ui->polyEdit->setText("Error");
+    } else {
+         ui->polyEdit->setText(g.toQString());
+    }
 }
 
 
@@ -175,6 +179,6 @@ void MainWindow::on_ACbutton_clicked()
     list.clear();
     model->setStringList(list);
     ui->polyList->setModel(model);
-    ui->answerEdit->clear();
+   // ui->answerEdit->clear();
     ui->polyEdit->clear();
 }

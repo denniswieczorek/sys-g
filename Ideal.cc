@@ -33,9 +33,15 @@ std::ostream& operator<<(std::ostream& output, Ideal& j){
 
 QString Ideal::toQString()  {
     QString output = "";
-    for(int i=0; i< ideal.size(); i++){
-      output += ideal[i].toQString() + ", ";
+    for(unsigned int i=0; i< ideal.size(); i++){
+        if(i==0 && (ideal[i].toQString()).left(1) == '+'){
+            output+= ideal[i].toQString().remove(0,1) + ",";
+        } else {
+            output += ideal[i].toQString() + ", ";
+        }
     }
+   output = output.remove(output.size()-1,1);
    output = "<" + output + ">";
+
     return output;
 }
